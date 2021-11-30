@@ -86,10 +86,12 @@ total <-- Total a pagar para cubrir la factura
 ```javascript
 permitido_pagar -> Se puede pagar o no (Por temas de multa)
 total           -> Monto a pagar
+n_abonado           -> Mostrar ese núumero, es el identificador del medidor o número de abonado
 {
     "data": [
         {
             "bill_status": "Sin cancelar",
+            "n_abonado": "25-25-55555",
             "permitido_pagar": 1,
             "uuid": 29,
             "subtotal": "10.33",
