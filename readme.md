@@ -34,12 +34,12 @@ Content-Type = application/json
 
  access_key <-- llave emitida por la empresa para el acceso al sistema
 
- n_abonado  <--  Número de abonado del medidor del cliente 
+ identificator  <--  Número de abonado del medidor del cliente o número de cédula
 
 ```javascript
 {
     "access_key": "123", 
-    "n_abonado" : "01-25-20" 
+    "identificator" : "01-25-20" 
 }
 ```
 
@@ -59,6 +59,24 @@ Content-Type = application/json
     }
 }
 ```
+
+
+=> Código => 422<br>
+=> status => Unprocessable Entity
+
+```javascript
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "identificator": [
+            "identificator es requerido"
+        ]
+    }
+}
+```
+
+
+
 => Código => 200<br>
 => status => ok
 
