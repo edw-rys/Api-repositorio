@@ -84,9 +84,13 @@ uuid <-- id para realizar el pago<br>
 total <-- Total a pagar para cubrir la factura
 
 ```javascript
+permitido_pagar -> Se puede pagar o no (Por temas de multa)
+total           -> Monto a pagar
 {
     "data": [
         {
+            "bill_status": "Sin cancelar",
+            "permitido_pagar": 1,
             "uuid": 29,
             "subtotal": "10.33",
             "descuento": "1.03",
@@ -214,6 +218,24 @@ _Respuestas_
         ],
         "code": [
             "code es requerido"
+        ]
+    }
+}
+```
+
+
+
+
+
+=> Código => 403<br>
+=> status => Forbidden
+
+```javascript
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "uuid": [
+            "No está permitido el pago por corte de servicios."
         ]
     }
 }
