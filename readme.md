@@ -51,12 +51,12 @@ Content-Type = application/json
 
 ```javascript
 {
-    "errors": [
-        {
-            "key": "access_key",
-            "message": "Autenticación no es válida"
-        }
-    ]
+    "message": "The given data was invalid.",
+    "errors": {
+        "access_key": [
+            "Autenticación no es válida"
+        ]
+    }
 }
 ```
 => Código => 200<br>
@@ -121,63 +121,6 @@ total <-- Total a pagar para cubrir la factura
 <br>
 <br>
 <br>
-
-
-### PETICIÓN API PARA CONSULTAR TIPOS DE PAGOS 🔩
-
-## _EndPoint: api/api-methods-invoice_
-## _Metodo: GET_
-
-
-## _Cabeceras_
-
-```javascript
-Accept = application/json
-Content-Type = application/json
-```
-
-_Respuesta_
-
-
-```javascript
-[
-    {
-        "code": "01",
-        "value": "SIN UTILIZACIÓN DEL SISTEMA FINANCIERO "
-    },
-    {
-        "code": "15",
-        "value": "COMPENSACIÓN DE DEUDAS "
-    },
-    {
-        "code": "16",
-        "value": "TARJETA DE DÉBITO "
-    },
-    {
-        "code": "17",
-        "value": "DINERO ELECTRÓNICO "
-    },
-    {
-        "code": "18",
-        "value": "TARJETA PREPAGO "
-    },
-    {
-        "code": "19",
-        "value": "TARJETA DE CRÉDITO "
-    },
-    {
-        "code": "20",
-        "value": "OTROS CON UTILIZACIÓN DEL SISTEMA FINANCIERO "
-    },
-    {
-        "code": "21",
-        "value": "ENDOSO DE TÍTULOS "
-    }
-]
-```
-
-<br>
-<br>
 <br>
 
 ### PETICIÓN API PARA PAGAR FACTURA 🔩
@@ -203,7 +146,7 @@ Content-Type = application/json
     "access_key": "123", 
     "uuid" : "23",
     "total" : "23",
-    "code" : "23"
+    "transaction_id" : "23"
 }
 ```
 
@@ -215,12 +158,12 @@ _Respuestas_
 
 ```javascript
 {
-    "errors": [
-        {
-            "key": "access_key",
-            "message": "Autenticación no es válida"
-        }
-    ]
+    "message": "The given data was invalid.",
+    "errors": {
+        "access_key": [
+            "Autenticación no es válida"
+        ]
+    }
 }
 ```
 
@@ -235,10 +178,11 @@ _Respuestas_
     "message": "The given data was invalid.",
     "errors": {
         "total": [
-            "total es requerido"
+            "total es requerido",
+            "total No es un número válido"
         ],
-        "code": [
-            "code es requerido"
+        "transaction_id": [
+            "transaction id es requerido"
         ]
     }
 }
@@ -338,3 +282,176 @@ _Respuestas_
 }
 ```
 
+
+
+<br>
+<br>
+<br>
+<br>
+
+### PETICIÓN API PARA CONSULTAR PAGOS HECHOS SEGÚN UNA FECHA 🔩
+
+## _EndPoint: api/api-info-payments_
+## _Metodo: POST_
+
+## _Cabeceras_
+
+```javascript
+Accept = application/json
+Content-Type = application/json
+```
+
+## _Cuerpo_
+
+ access_key <-- llave emitida por la empresa para el acceso al sistema
+
+ uuid  <--  Código de la factura a pagar
+
+```javascript
+{
+    "access_key": "123",
+    "date" : "2021-11-27"
+}
+```
+
+
+_Respuestas_
+
+=> Código => 401<br>
+=> status => Unauthorized
+
+```javascript
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "access_key": [
+            "Autenticación no es válida"
+        ]
+    }
+}
+```
+
+
+=> Código => 422<br>
+=> status => Unprocessable  Entity
+
+```javascript
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "date": [
+            "fecha la fecha no es válida"
+        ]
+    }
+}
+```
+
+=> Código => 200<br>
+=> status => ok
+
+```javascript
+{
+    "data": [
+        {
+            "payment_id": 37,
+            "transaction_id": "111",
+            "total": 3
+        },
+        {
+            "payment_id": 38,
+            "transaction_id": "222",
+            "total": 1
+        },
+        {
+            "payment_id": 39,
+            "transaction_id": "333",
+            "total": 1.2
+        },
+        {
+            "payment_id": 40,
+            "transaction_id": "444",
+            "total": 0.8
+        },
+        {
+            "payment_id": 41,
+            "transaction_id": "555",
+            "total": 2
+        }
+    ]
+}
+```
+
+
+<br>
+<br>
+<br>
+<br>
+
+### PETICIÓN API PARA REVERSAR UN PAGO 🔩
+
+## _EndPoint: api/api-reverse-pay_
+## _Metodo: POST_
+
+## _Cabeceras_
+
+```javascript
+Accept = application/json
+Content-Type = application/json
+```
+
+## _Cuerpo_
+
+ access_key <-- llave emitida por la empresa para el acceso al sistema
+
+ uuid  <--  Código de la factura a pagar
+
+```javascript
+{
+    "access_key": "123",
+    "transaction_id" : "34"
+}
+```
+
+
+_Respuestas_
+
+=> Código => 401<br>
+=> status => Unauthorized
+
+```javascript
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "access_key": [
+            "Autenticación no es válida"
+        ]
+    }
+}
+```
+
+
+=> Código => 422<br>
+=> status => Unprocessable  Entity
+
+```javascript
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "transaction_id": [
+            "transaction id es requerido",
+            "transaction id no existe"
+        ]
+    }
+}
+```
+
+=> Código => 200<br>
+=> status => ok
+
+```javascript
+{
+    "message": "Pago eliminado",
+    "status": "success",
+    "data": []
+}
+```
