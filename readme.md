@@ -89,6 +89,7 @@ total           -> Monto a pagar
 {
     "data": [
         {
+            "type": "invoice",
             "bill_status": "Sin cancelar",
             "permitido_pagar": 1,
             "uuid": 29,
@@ -168,7 +169,8 @@ Content-Type = application/json
     "access_key": "123", 
     "uuid" : "23",
     "total" : "23",
-    "transaction_id" : "23"
+    "transaction_id" : "23",
+    "type"  : "invoice"
 }
 ```
 
@@ -205,6 +207,9 @@ _Respuestas_
         ],
         "transaction_id": [
             "transaction id es requerido"
+        ]
+         "type": [
+            "type es requerido"
         ]
     }
 }
